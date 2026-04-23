@@ -1,0 +1,42 @@
+---
+- task: "lammps-cpu"
+  description: "Running LAMMPS without GPU acceleration"
+  app_binary: "lmp"
+  modules_needed: "lammps/29Aug2024"
+  nprocs: "4"
+  mpiexec: "mpirun"
+  mpiexec_numproc_flag: "-np"
+  working_dir: "/project/rcc/users/trung/nodes-testing-tools"
+  input_dir: "/project/rcc/shared/nodes-testing/lammps/bench"
+  args: "-in $input_dir/in.lj -cite none"
+  extract_output_script: "$working_dir/lammps_extract_output.sh"
+  run_completed_marker: "Loop"
+  expected:
+    TotEng:
+      value: -4.6223113
+      abstol: 1.0e-3
+    TPS:
+      value: 208
+      reltol: 10.0
+
+- task: "lammps-gpu"
+  description: "Running LAMMPS with GPU acceleration"
+  app_binary: "lmp"
+  modules_needed: "lammps/29Aug2024"
+  nprocs: "4"
+  mpiexec: "mpirun"
+  mpiexec_numproc_flag: "-np"
+  working_dir: "/project/rcc/users/trung/nodes-testing-tools"
+  input_dir: "/project/rcc/shared/nodes-testing/lammps/bench"
+  args: "-in $input_dir/in.lj -cite none -sf gpu -pk gpu 1"
+  extract_output_script: "$working_dir/lammps_extract_output.sh"
+  run_completed_marker: "Loop"
+  expected:
+    TotEng:
+      value: -4.6223113
+      abstol: 1.0e-3
+    TPS:
+      value: 208
+      reltol: 10.0
+
+

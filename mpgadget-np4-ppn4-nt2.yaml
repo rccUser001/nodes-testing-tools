@@ -1,4 +1,6 @@
 ---
+- task: "mp-gadget"
+  description: "Running MP-Gadget"
   app_binary:
     - "$working_dir/tmp/mp-gadget/build/MP-Gadget/genic/MP-GenIC"
     - "$working_dir/tmp/mp-gadget/build/MP-Gadget/gadget/MP-Gadget"

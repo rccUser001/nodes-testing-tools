@@ -1,4 +1,6 @@
 ---
+- task: "hpcc-medium"
+  description: "Running HPCC- medium-sized problem"
   app_binary: "./hpcc-intelmpi"
   modules_needed: "intelmpi/2021.5+intel-2022.0 mkl/2023.1"
   preprocess: "cd $input_dir"

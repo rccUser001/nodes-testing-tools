@@ -1,0 +1,32 @@
+---
+- task: "lscpu"
+  description: "running lscpu"
+  app_binary: "lscpu"
+  modules_needed: ""
+  args: ""
+  working_dir: "./"
+  input_dir: "./"
+  extract_output_script: "$working_dir/lscpu_extract_output.sh"
+  run_completed_marker: "CPU(s)"
+  expected:
+    Cores:
+      value: 48
+      abstol: 0
+    ThreadsPerCore:
+      value: 1
+      abstol: 0
+
+- task: "lscpu-extended"
+  description: "Running lscpu --extended to check if hyperthreading is enabled"
+  app_binary: "lscpu"
+  modules_needed: ""
+  args: "--extended"
+  working_dir: "./"
+  input_dir: "./"
+  extract_output_script: "$working_dir/lscpu_extended_extract_output.sh"
+  run_completed_marker: ""
+  expected:
+    Hyperthreading:
+      value: 0
+      abstol: 0
+

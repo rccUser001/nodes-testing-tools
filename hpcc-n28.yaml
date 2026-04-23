@@ -1,0 +1,73 @@
+---
+- task: "hpcc-medium"
+  description: "Running HPCC- medium-sized problem"
+  app_binary: "./hpcc-intelmpi"
+  modules_needed: "intelmpi/2021.5+intel-2022.0 mkl/2023.1"
+  preprocess: "cd $input_dir"
+  nprocs: "28"
+  mpiexec: "mpirun"
+  mpiexec_numproc_flag: "-np"
+  working_dir: "/project/rcc/users/bkhowell/nodes-testing-tools"
+  input_dir: "/project/rcc/users/bkhowell/RCC-benchmark-suite/hpcc/tests"
+  args: "&& cat hpccoutf.txt && rm hpccoutf.txt"
+  extract_output_script: "$working_dir/hpcc_extract_output.sh"
+  run_completed_marker: "End of HPC Challenge"
+  expected:
+    HPL:
+      value:  6.104880e+02
+      reltol: 5.0
+    DGEMM:
+      value:  6.272940e+01
+      reltol: 5.0
+    STREAM:
+      value:  3.366510e+00
+      reltol: 8.0
+    PTRANS:
+      value:  1.165030e+01
+      reltol: 12.0
+    FFT:
+      value:  2.329520e+00
+      reltol: 10.0
+    RA:
+      value:  1.205580e-01
+      reltol: 15.0
+    MPIFFT:
+      value:  1.733420e+01
+      reltol: 10.0
+
+- task: "hpcc-large"
+  description: "Running HPCC- large-sized problem"
+  skip: True
+  app_binary: "./hpcc-intelmpi"
+  modules_needed: "intelmpi/2021.5+intel-2022.0 mkl/2023.1"
+  preprocess: "cd $input_dir"
+  nprocs: "28"
+  mpiexec: "mpirun"
+  mpiexec_numproc_flag: "-np"
+  working_dir: "/project/rcc/users/bkhowell/nodes-testing-tools"
+  input_dir: "/project/rcc/users/bkhowell/RCC-benchmark-suite/hpcc/tests"
+  args: "&& cat hpccoutf.txt && rm hpccoutf.txt"
+  extract_output_script: "$working_dir/hpcc_extract_output.sh"
+  run_completed_marker: "End of HPC Challenge"
+  expected:
+    HPL:
+      value:  5.775940e+02
+      reltol: 5.0
+    DGEMM:
+      value:  4.619720e+01
+      reltol: 5.0
+    STREAM:
+      value:  2.270870e+00
+      reltol: 8.0
+    PTRANS:
+      value:  1.131592e+01
+      reltol: 12.0
+    FFT:
+      value:  2.309145e+00
+      reltol: 10.0
+    RA:
+      value:  1.102633e-01
+      reltol: 15.0
+    MPIFFT:
+      value:  1.792414e+01
+      reltol: 10.0

@@ -1,4 +1,6 @@
 ---
+- task: "lammps-cpu"
+  description: "Running vanilla LAMMPS with CPU-only"
   app_binary: "lmp"
   modules_needed: "lammps/29Aug2024"
   nprocs: "4"

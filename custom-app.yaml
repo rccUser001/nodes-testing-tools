@@ -1,9 +1,8 @@
 ---
+- task: "numpy"
+  description: "Running a Python script to test numpy"
   app_binary: "python3"
   modules_needed: "python/miniforge-25.3.0"
-  nprocs: ""
-  mpiexec: ""
-  mpiexec_numproc_flag: "-np"
   working_dir: "/project/rcc/users/trung/nodes-testing-tools"
   input_dir: ""
   args: "test_numpy.py"
