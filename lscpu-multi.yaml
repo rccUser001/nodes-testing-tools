@@ -17,7 +17,7 @@
       abstol: 0
 
 - task: "lscpu-extended"
-  description: "Running lscpu --extended to check if hypthreading is enabled"
+  description: "Running lscpu --extended to check if hyperthreading is enabled"
   app_binary: "lscpu"
   modules_needed: ""
   args: "--extended"

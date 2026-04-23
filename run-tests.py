@@ -62,8 +62,11 @@ def execute(task, verbose=False):
             
             if 'args' in task:
                 args = task['args'][i]
+                if '$working_dir' in args:
+                    args = args.replace("$working_dir", task['working_dir'])
                 args = args.replace("$working_dir", task['working_dir'])
-                args = args.replace("$input_dir", task['input_dir'])
+                if '$input_dir' in args:
+                    args = args.replace("$input_dir", task['input_dir'])
                 cmd_str += args
 
             cmd_str += " && "
@@ -74,13 +77,16 @@ def execute(task, verbose=False):
             cmd_str += task['mpiexec'] + " " + task['mpiexec_numproc_flag'] + " " + task['nprocs'] + " "
         
         appbin = task['app_binary']
-        appbin = appbin.replace("$working_dir",task['working_dir'])
+        if '$working_dir' in appbin:
+            appbin = appbin.replace("$working_dir",task['working_dir'])
         cmd_str += appbin + " " 
-        
+
         if 'args' in task:
             args = task['args']
-            args = args.replace("$working_dir", task['working_dir'])
-            args = args.replace("$input_dir", task['input_dir'])
+            if '$working_dir' in args:
+                args = args.replace("$working_dir", task['working_dir'])
+            if '$input_dir' in args:
+                args = args.replace("$input_dir", task['input_dir'])
             cmd_str += args
 
     # multiple runs may need larger timeout value
@@ -107,7 +113,7 @@ def execute(task, verbose=False):
             logging.info(msg = f"The run might not have completed successfully. Rerun {cmd_str} to troubleshoot.")
 
         if p.returncode != 0:
-            logging.info(f'Run completed without erors, but with non-zero return code {p.returncode}. Check stderr for details.')
+            logging.info(f'Run failed with non-zero return code {p.returncode}. Check stderr for details.')
         else:
             logging.info(f'Run completed successfully with return code {p.returncode}.')
 
@@ -122,7 +128,7 @@ def execute(task, verbose=False):
         if 'working_dir' in task:
             working_dir = task['working_dir']
         extract_script = task['extract_output_script'].replace("$working_dir", working_dir)
-        extract_cmd_str = f"./{extract_script} .tmp-{task_name}.txt > output-{task_name}.yaml"
+        extract_cmd_str = f"bash {extract_script} .tmp-{task_name}.txt > output-{task_name}.yaml"
         p = subprocess.run(extract_cmd_str, shell=True, text=True, capture_output=True, timeout=60)
 
         status['extract_status'] = {
@@ -141,10 +147,10 @@ def execute(task, verbose=False):
             logging.error(f"Extract step did not produce output.yaml: {extract_cmd_str}")
         else:
             try:
-                with open("output.yaml", 'r') as f:
+                with open(f"output-{task_name}.yaml", 'r') as f:
                     output_results = yaml.load(f, Loader=Loader)
             except yaml.YAMLError as e:
-                logging.error(f"Failed to parse output.yaml: {e}")
+                logging.error(f"Failed to parse output-{task_name}.yaml: {e}")
 
         if isinstance(output_results, dict) and 'output' in output_results:
             status['output_results'] = output_results['output']       
