@@ -1,0 +1,17 @@
+---
+- task: "linpack-hpl"
+  description: "Running HPL (Linpack) using MKL linpack binary"
+  app_binary: "./xlinpack_xeon64"
+  modules_needed: "mkl/2023.1"
+  preprocess: "cd $input_dir"
+  nprocs: "1"
+  working_dir: "/project/rcc/users/trung/nodes-testing-tools"
+  input_dir: "/software/intel/oneapi_hpc_2023.1/mkl/2023.1.0/benchmarks/linpack"
+  args: "< lininput_xeon64"
+  extract_output_script: "$working_dir/linpack_extract_output.sh"
+  run_completed_marker: "pass"
+  timeout_value: 10800
+  expected:
+    HPL:
+      value: 1.0
+      reltol: 1000000.0
